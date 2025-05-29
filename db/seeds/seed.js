@@ -50,7 +50,7 @@ const seed = async ({ topicData, userData, articleData, commentData }) => {
 
     const formatComments = (comments) => {
         return comments.map((comment) => {
-            const formatted = convertTimestampToDate(comments);
+            const formatted = convertTimestampToDate(comment);
             return [
                 formatted.article_id,
                 formatted.body,
