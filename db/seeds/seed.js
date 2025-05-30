@@ -2,8 +2,17 @@ const db = require("../connection");
 const format = require("pg-format");
 const { dropTables, createTables } = require("../manage-tables");
 const { convertTimestampToDate } = require("./utils");
+const { userArticleUserData } = require("../data/test-data");
 
-const seed = async ({ topicData, userData, articleData, commentData }) => {
+const seed = async ({
+    topicData,
+    userData,
+    articleData,
+    commentData,
+    emojiData,
+    emojiArticleUserData,
+    userTopicData,
+}) => {
     await dropTables();
     await createTables();
 
@@ -65,6 +74,38 @@ const seed = async ({ topicData, userData, articleData, commentData }) => {
         formatComments(commentData)
     );
     await db.query(insertComments);
+
+    const insertEmojis = format(
+        `INSERT INTO emojis(emoji) VALUES %L RETURNING *;`,
+        emojiData.map(({ emoji }) => [emoji])
+    );
+    await db.query(insertEmojis);
+
+    const insertEmojiReact = format(
+        `INSERT INTO emoji_article_user(emoji_id, username, article_id) VALUES %L RETURNING *;`,
+        emojiArticleUserData.map(({ emoji_id, username, article_id }) => [
+            emoji_id,
+            username,
+            article_id,
+        ])
+    );
+    await db.query(insertEmojiReact);
+
+    const insertUserTopics = format(
+        `INSERT INTO user_topic(username,topic) VALUES %L RETURNING *;`,
+        userTopicData.map(({ username, topic }) => [username, topic])
+    );
+    await db.query(insertUserTopics);
+
+    const insertUserArticleVotes = format(
+        `INSERT INTO user_article_votes(username,article_id,vote_count) VALUES %L RETURNING *;`,
+        userArticleUserData.map(({ username, article_id, vote_count }) => [
+            username,
+            article_id,
+            vote_count,
+        ])
+    );
+    await db.query(insertUserArticleVotes);
 };
 
 module.exports = seed;

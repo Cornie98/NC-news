@@ -19,3 +19,10 @@ SELECT * FROM comments WHERE votes > 10;
 
 \o all_comments.txt
 SELECT * FROM comments;
+
+\o top_users_by_votes.txt
+SELECT username, SUM(comments.votes) AS total_votes
+FROM users
+JOIN comments ON users.username = comments.author
+GROUP BY username
+ORDER BY total_votes DESC;
