@@ -6,3 +6,4 @@ exports.emojiData = require("./emojis.js");
 exports.emojiArticleUserData = require("./emojiArticleUser.js");
 exports.userTopicData = require("./userTopic.js");
 exports.userArticleUserData = require("./userArticleVote.js");
+exports.savedArticleData = require("./savedArticles.js");

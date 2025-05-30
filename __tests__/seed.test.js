@@ -682,7 +682,7 @@ describe("data insertion", () => {
 
                     expect(entry).toHaveProperty("vote_count");
                     expect(typeof entry.vote_count).toBe("number");
-                    expect([-1, 1]).toContain(entry.vote_count); // optional: ensure it's an up/down vote
+                    expect([-1, 1]).toContain(entry.vote_count);
                 });
             });
     });

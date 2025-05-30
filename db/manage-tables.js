@@ -2,6 +2,7 @@ const db = require("./connection");
 
 exports.dropTables = () => {
     const tables = [
+        "saved_articles",
         "user_article_votes",
         "user_topic",
         "emoji_article_user",
@@ -79,7 +80,13 @@ exports.createTables = () => {
         UNIQUE(username, article_id)
         );
 
-
+        CREATE TABLE saved_articles (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR NOT NULL REFERENCES users(username) ON DELETE CASCADE,
+        article_id INT REFERENCES articles(article_id) ON DELETE CASCADE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(username, article_id)
+        );
     `
     );
 };

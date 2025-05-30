@@ -12,6 +12,7 @@ const seed = async ({
     emojiData,
     emojiArticleUserData,
     userTopicData,
+    savedArticleData,
 }) => {
     await dropTables();
     await createTables();
@@ -106,6 +107,18 @@ const seed = async ({
         ])
     );
     await db.query(insertUserArticleVotes);
+
+    const formattedSavedArticles = savedArticleData.map((entry) => {
+        const formatted = convertTimestampToDate(entry);
+        return [formatted.username, formatted.article_id, formatted.created_at];
+    });
+
+    const insertSavedArticles = format(
+        `INSERT INTO saved_articles(username, article_id, created_at) VALUES %L RETURNING *;`,
+        formattedSavedArticles
+    );
+
+    await db.query(insertSavedArticles);
 };
 
 module.exports = seed;
