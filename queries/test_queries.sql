@@ -26,3 +26,14 @@ FROM users
 JOIN comments ON users.username = comments.author
 GROUP BY username
 ORDER BY total_votes DESC;
+
+\o emojis_on_article.txt
+
+SELECT 
+emojis.emoji,
+emoji_article_user.username,
+emoji_article_user.article_id
+FROM 
+emoji_article_user
+JOIN 
+emojis ON emoji_article_user.emoji_id = emojis.emoji_id;

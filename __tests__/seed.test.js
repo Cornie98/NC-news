@@ -637,7 +637,7 @@ describe("data insertion", () => {
         return db
             .query(`SELECT * FROM emoji_article_user;`)
             .then(({ rows }) => {
-                expect(rows).toHaveLength(4);
+                expect(rows).toHaveLength(5);
 
                 rows.forEach((entry) => {
                     expect(entry).toHaveProperty("emoji_article_user_id");
