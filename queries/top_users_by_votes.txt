@@ -1,10 +1,6 @@
-   username   | total_votes 
---------------+-------------
- cooljmessy   |         429
- jessjelly    |         380
- happyamy2016 |         312
- grumpy19     |         307
- weegembump   |         265
- tickle122    |         208
-(6 rows)
+   username    | total_votes 
+---------------+-------------
+ butter_bridge |          48
+ icellusedkars |          36
+(2 rows)
 

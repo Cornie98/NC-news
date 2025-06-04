@@ -75,4 +75,30 @@ app.get("/api/articles/:article_id", (request, response) => {
         });
 });
 
+app.get("/api/articles/:article_id/comments", (request, response) => {
+    const { article_id } = request.params;
+
+    if (isNaN(article_id)) {
+        return response.status(400).send({ msg: "Invalid article ID" });
+    }
+
+    return db
+        .query(`SELECT * FROM articles WHERE article_id = $1`, [article_id])
+        .then(({ rows }) => {
+            if (rows.length === 0) {
+                return response.status(404).send({ msg: "Article not found" });
+            }
+            return db.query(
+                `
+                SELECT comment_id, votes, created_at, author, body
+                FROM comments
+                WHERE article_id = $1
+                ORDER BY created_at DESC;`,
+                [article_id]
+            );
+        })
+        .then((result) => {
+            return response.status(200).send({ comments: result.rows });
+        });
+});
 module.exports = app;

@@ -35,5 +35,19 @@
                 }
             ]
         }
+    },
+
+    "GET /api/articles/:article_id": {
+        "description": "serves an article object by its ID",
+        "exampleResponse": {
+            "article": {
+                "article_id": 1,
+                "title": "Article title...",
+                "author": "author_name",
+                "body": "Full article body here...",
+                "votes": 100,
+                "created_at": "2020-01-01T00:00:00.000Z"
+            }
+        }
     }
 }

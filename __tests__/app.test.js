@@ -39,7 +39,6 @@ describe("GET /api/articles", () => {
             .then(({ body }) => {
                 const { articles } = body;
 
-                // Basic shape checks
                 expect(Array.isArray(articles)).toBe(true);
                 expect(articles.length).toBeGreaterThan(0);
 
@@ -138,5 +137,29 @@ describe("GET /api/articles/:article_id", () => {
             .then(({ body }) => {
                 expect(body.msg).toBe("Invalid article ID");
             });
+    });
+
+    describe("Get /api/articles/:article_id/comments", () => {
+        test("200:returns with comment data from, an article id", () => {
+            return request(app)
+                .get("/api/articles/1/comments")
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.comments.length).toBe(11);
+                    body.comments.forEach((comment) => {
+                        expect(typeof comment.votes).toBe("number");
+                        expect(typeof comment.author).toBe("string");
+                        expect(typeof comment.body).toBe("string");
+                    });
+                });
+        });
+        test("404: article doesn't exist", () => {
+            return request(app)
+                .get("/api/articles/1000/comments")
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe("Article not found");
+                });
+        });
     });
 });

@@ -1,10 +1,8 @@
-   username   |    name     |                                                           avatar_url                                                            
---------------+-------------+---------------------------------------------------------------------------------------------------------------------------------
- tickle122    | Tom Tickle  | https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953
- grumpy19     | Paul Grump  | https://vignette.wikia.nocookie.net/mrmen/images/7/78/Mr-Grumpy-3A.PNG/revision/latest?cb=20170707233013
- happyamy2016 | Amy Happy   | https://vignette1.wikia.nocookie.net/mrmen/images/7/7f/Mr_Happy.jpg/revision/latest?cb=20140102171729
- cooljmessy   | Peter Messy | https://vignette.wikia.nocookie.net/mrmen/images/1/1a/MR_MESSY_4A.jpg/revision/latest/scale-to-width-down/250?cb=20170730171002
- weegembump   | Gemma Bump  | https://vignette.wikia.nocookie.net/mrmen/images/7/7e/MrMen-Bump.png/revision/latest?cb=20180123225553
- jessjelly    | Jess Jelly  | https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141
-(6 rows)
+   username    |    name    |                                avatar_url                                 
+---------------+------------+---------------------------------------------------------------------------
+ butter_bridge | jonny      | https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg
+ icellusedkars | sam        | https://avatars2.githubusercontent.com/u/24604688?s=460&v=4
+ rogersop      | paul       | https://avatars2.githubusercontent.com/u/24394918?s=400&v=4
+ lurker        | do_nothing | https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png
+(4 rows)
 
