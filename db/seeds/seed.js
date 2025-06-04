@@ -11,6 +11,7 @@ const seed = async ({
     commentData,
     emojiData,
     emojiArticleUserData,
+    userArticleUserData,
     userTopicData,
     savedArticleData,
 }) => {
