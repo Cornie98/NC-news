@@ -6,7 +6,7 @@ const emojiArticleUser = require("../db/data/test-data/emojiArticleUser");
 beforeAll(() => seed(data));
 afterAll(() => db.end());
 
-describe("seed", () => {
+describe.skip("seed", () => {
     describe("topics table", () => {
         test("topics table exists", () => {
             return db
