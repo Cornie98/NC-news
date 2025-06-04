@@ -1,0 +1,9 @@
+ emoji | username | article_id 
+-------+----------+------------
+ 👍    | grumpy19 |          1
+ 👎    | grumpy19 |          5
+ 👍    | grumpy19 |          2
+ 🔥    | grumpy19 |          1
+ 👎    | grumpy19 |          1
+(5 rows)
+
