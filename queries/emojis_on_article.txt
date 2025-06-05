@@ -1,9 +1,9 @@
- emoji |   username    | article_id 
--------+---------------+------------
- 👍    | icellusedkars |          1
- 👎    | icellusedkars |          5
- 👍    | butter_bridge |          2
- 🔥    | butter_bridge |          1
- 👎    | butter_bridge |          1
+ emoji | username | article_id 
+-------+----------+------------
+ 👍    | grumpy19 |          1
+ 👎    | grumpy19 |          5
+ 👍    | grumpy19 |          2
+ 🔥    | grumpy19 |          1
+ 👎    | grumpy19 |          1
 (5 rows)
 

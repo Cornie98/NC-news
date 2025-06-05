@@ -57,13 +57,19 @@ const seed = async ({
         formatArticles(articleData)
     );
 
-    await db.query(insertArticles);
+    const insertedArticles = await db.query(insertArticles);
 
-    const formatComments = (comments) => {
+    const articleTitleToId = {};
+    insertedArticles.rows.forEach(({ title, article_id }) => {
+        articleTitleToId[title] = article_id;
+    });
+
+    const formatComments = (comments, articleTitleToId) => {
         return comments.map((comment) => {
             const formatted = convertTimestampToDate(comment);
+            const article_id = articleTitleToId[formatted.article_title];
             return [
-                formatted.article_id,
+                article_id,
                 formatted.body,
                 formatted.votes,
                 formatted.author,
@@ -73,7 +79,7 @@ const seed = async ({
     };
     const insertComments = format(
         `INSERT INTO comments(article_id,body,votes,author,created_at) VALUES %L RETURNING *;`,
-        formatComments(commentData)
+        formatComments(commentData, articleTitleToId)
     );
     await db.query(insertComments);
 
