@@ -163,3 +163,53 @@ describe("GET /api/articles/:article_id", () => {
         });
     });
 });
+describe("POST /api/articles/:article_id/comments", () => {
+    test("201: responds with the posted comment", () => {
+        const newComment = {
+            username: "lurker",
+            body: "i am commenting on this article...",
+        };
+
+        return request(app)
+            .post("/api/articles/3/comments")
+            .send(newComment)
+            .expect(201)
+            .then(({ body }) => {
+                expect(typeof body.comment.comment_id).toBe("number");
+                expect(body.comment.article_id).toBe(3);
+                expect(typeof body.comment.body).toBe("string");
+                expect(typeof body.comment.votes).toBe("number");
+            });
+    });
+});
+describe("PATCH /api/articles/:article_id", () => {
+    test("200: responds with an updated article", () => {
+        return request(app)
+            .patch("/api/articles/3")
+            .send({ inc_votes: 1 })
+            .expect(200)
+            .then(({ body }) => {
+                const article = body.article;
+                expect(article.article_id).toBe(3);
+                expect(typeof article.votes).toBe("number");
+            });
+    });
+    test("404: responds with error if article doesn't exist", () => {
+        return request(app)
+            .patch("/api/articles/1234")
+            .send({ inc_votes: 1 })
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Article not found");
+            });
+    });
+    test("400: responds with error if invalid vote", () => {
+        return request(app)
+            .patch("/api/articles/3")
+            .send({ inc_votes: "cats" })
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid vote input");
+            });
+    });
+});
