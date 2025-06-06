@@ -143,7 +143,7 @@ describe("GET /api/articles", () => {
     });
 });
 describe("GET /api/users", () => {
-    test("200: responds with an array of topic objects", () => {
+    test("200: responds with an array of user objects", () => {
         return request(app)
             .get("/api/users")
             .expect(200)
@@ -172,6 +172,7 @@ describe("GET /api/articles/:article_id", () => {
                     created_at,
                     votes,
                     article_img_url,
+                    comment_count,
                 } = article;
 
                 expect(article_id).toBe(1);
@@ -182,6 +183,7 @@ describe("GET /api/articles/:article_id", () => {
                 expect(typeof created_at).toBe("string");
                 expect(typeof votes).toBe("number");
                 expect(typeof article_img_url).toBe("string");
+                expect(typeof comment_count).toBe("number");
             });
     });
     test("404: article doesn't exist", () => {
@@ -221,6 +223,15 @@ describe("GET/api/articles/:article_id/comments", () => {
             .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toBe("Article not found");
+            });
+    });
+    test("200: returns empty array when article exists but has no comments", () => {
+        return request(app)
+            .get("/api/articles/2/comments")
+            .expect(200)
+            .then(({ body }) => {
+                expect(Array.isArray(body.comments)).toBe(true);
+                expect(body.comments.length).toBe(0);
             });
     });
 });
