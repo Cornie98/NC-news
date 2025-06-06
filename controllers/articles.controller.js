@@ -6,9 +6,12 @@ const {
 } = require("../models/articles.model");
 
 exports.getAllArticles = (request, response, next) => {
-    selectAllArticles().then((articles) => {
-        response.status(200).send({ articles });
-    });
+    const { sort_by = "created_at", order = "DESC" } = request.query;
+    selectAllArticles(sort_by, order)
+        .then((articles) => {
+            response.status(200).send({ articles });
+        })
+        .catch(next);
 };
 exports.getArticleById = (request, response, next) => {
     const { article_id } = request.params;

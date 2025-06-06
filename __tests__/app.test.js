@@ -5,7 +5,7 @@ const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data/index");
 
-beforeAll(() => seed(data));
+beforeEach(() => seed(data));
 afterAll(() => db.end());
 
 describe("GET /api", () => {
@@ -66,7 +66,7 @@ describe("GET /api/articles", () => {
             });
     });
 
-    test("articles are sorted by created_at in descending order", () => {
+    test("200: articles are sorted by created_at in descending order", () => {
         return request(app)
             .get("/api/articles")
             .expect(200)
@@ -77,6 +77,48 @@ describe("GET /api/articles", () => {
                     const next = new Date(articles[i + 1].created_at).getTime();
                     expect(current).toBeGreaterThanOrEqual(next);
                 }
+            });
+    });
+    test("200: articles are sorted by votes ascending ", () => {
+        return request(app)
+            .get("/api/articles?sort_by=votes&order=ASC")
+            .expect(200)
+            .then(({ body }) => {
+                const articles = body.articles;
+                for (let i = 0; i < articles.length - 1; i++) {
+                    const current = articles[i].votes;
+                    const next = articles[i + 1].votes;
+                    expect(current).toBeLessThanOrEqual(next);
+                }
+            });
+    });
+    test("200: articles are sorted by comment count descending ", () => {
+        return request(app)
+            .get("/api/articles?sort_by=comment_count&order=DESC")
+            .expect(200)
+            .then(({ body }) => {
+                const articles = body.articles;
+                for (let i = 0; i < articles.length - 1; i++) {
+                    const current = articles[i].comment_count;
+                    const next = articles[i + 1].comment_count;
+                    expect(current).toBeGreaterThanOrEqual(next);
+                }
+            });
+    });
+    test("400: responds with invalid query if invalid sort_by", () => {
+        return request(app)
+            .get("/api/articles?sort_by=char_count&order=DESC")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid query");
+            });
+    });
+    test("400: responds with invalid query if invalid order", () => {
+        return request(app)
+            .get("/api/articles?sort_by=title&order=cat")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid query");
             });
     });
 });
@@ -138,29 +180,28 @@ describe("GET /api/articles/:article_id", () => {
                 expect(body.msg).toBe("Invalid article ID");
             });
     });
-
-    describe("Get /api/articles/:article_id/comments", () => {
-        test("200:returns with comment data from, an article id", () => {
-            return request(app)
-                .get("/api/articles/1/comments")
-                .expect(200)
-                .then(({ body }) => {
-                    expect(body.comments.length).toBe(11);
-                    body.comments.forEach((comment) => {
-                        expect(typeof comment.votes).toBe("number");
-                        expect(typeof comment.author).toBe("string");
-                        expect(typeof comment.body).toBe("string");
-                    });
+});
+describe("GET/api/articles/:article_id/comments", () => {
+    test("200:returns with comment data from, an article id", () => {
+        return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.comments.length).toBe(11);
+                body.comments.forEach((comment) => {
+                    expect(typeof comment.votes).toBe("number");
+                    expect(typeof comment.author).toBe("string");
+                    expect(typeof comment.body).toBe("string");
                 });
-        });
-        test("404: article doesn't exist", () => {
-            return request(app)
-                .get("/api/articles/1000/comments")
-                .expect(404)
-                .then(({ body }) => {
-                    expect(body.msg).toBe("Article not found");
-                });
-        });
+            });
+    });
+    test("404: article doesn't exist", () => {
+        return request(app)
+            .get("/api/articles/1000/comments")
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Article not found");
+            });
     });
 });
 describe("POST /api/articles/:article_id/comments", () => {
@@ -192,6 +233,7 @@ describe("PATCH /api/articles/:article_id", () => {
                 const article = body.article;
                 expect(article.article_id).toBe(3);
                 expect(typeof article.votes).toBe("number");
+                expect(article.votes).toBe(1);
             });
     });
     test("404: responds with error if article doesn't exist", () => {
@@ -210,6 +252,33 @@ describe("PATCH /api/articles/:article_id", () => {
             .expect(400)
             .then(({ body }) => {
                 expect(body.msg).toBe("Invalid vote input");
+            });
+    });
+});
+describe("DELETE /api/comments/:comment_id", () => {
+    test("204: responds with no content ", () => {
+        return request(app)
+            .delete("/api/comments/2")
+            .expect(204)
+            .then(({ body }) => {
+                console.log(body.msg);
+            });
+    });
+    test("404: comment not found", () => {
+        return request(app)
+            .delete("/api/comments/1000")
+            .expect(404)
+            .then(({ body }) => {
+                console.log(body.msg);
+                expect(body.msg).toBe("Comment not found");
+            });
+    });
+    test("400: Invalid comment ID", () => {
+        return request(app)
+            .delete("/api/comments/peanut")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid comment ID");
             });
     });
 });

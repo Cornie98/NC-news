@@ -13,6 +13,7 @@ const {
 const {
     getCommentsByArticle,
     postCommentByArticle,
+    deleteCommentById,
 } = require("./controllers/comments.controller.js");
 
 const { getAllTopics } = require("./controllers/topics.controller.js");
@@ -34,12 +35,14 @@ app.get("/api/articles/:article_id/comments", getCommentsByArticle);
 app.post("/api/articles/:article_id/comments", postCommentByArticle);
 app.patch("/api/articles/:article_id", patchArticleVotes);
 
-app.use((err, req, res, next) => {
-    if (err.status && err.msg) {
-        res.status(err.status).send({ msg: err.msg });
+app.delete("/api/comments/:comment_id", deleteCommentById);
+
+app.use((error, request, response, next) => {
+    if (error.status && error.msg) {
+        response.status(error.status).send({ msg: error.msg });
     } else {
         console.error(err);
-        res.status(500).send({ msg: "Internal server error" });
+        response.status(500).send({ msg: "Internal server error" });
     }
 });
 

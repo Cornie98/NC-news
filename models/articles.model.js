@@ -1,7 +1,22 @@
 const db = require("../db/connection");
 //const articles = require("../db/data/test-data/articles");
 
-exports.selectAllArticles = () => {
+exports.selectAllArticles = (sort_by = "created_at", order = "DESC") => {
+    const sortBy = [
+        "author",
+        "title",
+        "article_id",
+        "topic",
+        "created_at",
+        "votes",
+        "comment_count",
+    ];
+    const orders = ["ASC", "DESC"];
+
+    if (!sortBy.includes(sort_by) || !orders.includes(order)) {
+        return Promise.reject({ status: 400, msg: "Invalid query" });
+    }
+
     return db
         .query(
             `SELECT 
@@ -23,7 +38,7 @@ exports.selectAllArticles = () => {
         articles.created_at,
         articles.votes,
         articles.article_img_url
-      ORDER BY articles.created_at DESC;`
+      ORDER BY ${sort_by} ${order}`
         )
         .then(({ rows }) => rows);
 };
