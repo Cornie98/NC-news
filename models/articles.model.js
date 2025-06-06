@@ -1,7 +1,7 @@
 const db = require("../db/connection");
 //const articles = require("../db/data/test-data/articles");
 
-exports.selectAllArticles = (sort_by = "created_at", order = "DESC") => {
+exports.selectAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
     const sortBy = [
         "author",
         "title",
@@ -16,10 +16,9 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC") => {
     if (!sortBy.includes(sort_by) || !orders.includes(order)) {
         return Promise.reject({ status: 400, msg: "Invalid query" });
     }
+    const queryValues = [];
 
-    return db
-        .query(
-            `SELECT 
+    let queryString = `SELECT 
         articles.author,
         articles.title,
         articles.article_id,
@@ -29,18 +28,35 @@ exports.selectAllArticles = (sort_by = "created_at", order = "DESC") => {
         articles.article_img_url,
         COUNT(comments.comment_id)::INT AS comment_count
       FROM articles
-      LEFT JOIN comments ON comments.article_id = articles.article_id
-      GROUP BY 
-        articles.article_id,
-        articles.author,
-        articles.title,
-        articles.topic,
-        articles.created_at,
-        articles.votes,
-        articles.article_img_url
-      ORDER BY ${sort_by} ${order}`
-        )
-        .then(({ rows }) => rows);
+      LEFT JOIN comments ON comments.article_id = articles.article_id`;
+
+    if (topic) {
+        return db
+            .query(`SELECT slug FROM topics WHERE slug =$1`, [topic])
+            .then(({ rows }) => {
+                if (rows.length === 0) {
+                    return Promise.reject({
+                        status: 404,
+                        msg: "Topic not found",
+                    });
+                }
+                queryValues.push(topic);
+                queryString += ` WHERE articles.topic = $${queryValues.length}`;
+                queryString += ` 
+                GROUP BY articles.article_id
+                ORDER BY ${sort_by} ${order};`;
+
+                return db
+                    .query(queryString, queryValues)
+                    .then(({ rows }) => rows);
+            });
+    } else {
+        queryString += ` 
+        GROUP BY articles.article_id
+        ORDER BY ${sort_by} ${order}`;
+
+        return db.query(queryString).then(({ rows }) => rows);
+    }
 };
 
 exports.selectArticlesById = (article_id) => {

@@ -121,6 +121,26 @@ describe("GET /api/articles", () => {
                 expect(body.msg).toBe("Invalid query");
             });
     });
+    test("200: responds with the articles filtered by topic", () => {
+        return request(app)
+            .get("/api/articles?topic=cats")
+            .expect(200)
+            .then(({ body }) => {
+                const { articles } = body;
+                expect(Array.isArray(articles)).toBe(true);
+                articles.forEach((article) => {
+                    expect(article.topic).toBe("cats");
+                });
+            });
+    });
+    test("404: responds error msg topic not found", () => {
+        return request(app)
+            .get("/api/articles?topic=plants")
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Topic not found");
+            });
+    });
 });
 describe("GET /api/users", () => {
     test("200: responds with an array of topic objects", () => {
