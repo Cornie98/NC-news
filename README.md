@@ -17,7 +17,7 @@ This is a RESTful API which powers a news app where users can:
 
 The project was built as part of the Northcoders bootcamp to demonstrate the use of Express and PostgreSQL, including RESTful design and testing with Jest and Supertest.
 
-## How to setup
+## How to setup locally
 
 ### Package versions
 
@@ -58,6 +58,10 @@ npm install
 
     `npm run setup-dbs`
     `npm run seed`
+
+### Run the server
+
+`npm start`
 
 ### Testing
 
