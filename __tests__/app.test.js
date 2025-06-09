@@ -313,3 +313,24 @@ describe("DELETE /api/comments/:comment_id", () => {
             });
     });
 });
+describe("GET /api/users/:user_id", () => {
+    test("200: responds with user", () => {
+        return request(app)
+            .get("/api/users/butter_bridge")
+            .expect(200)
+            .then(({ body }) => {
+                const user = body.user;
+                expect(user.username).toBe("butter_bridge");
+                expect(typeof user.name).toBe("string");
+                expect(typeof user.avatar_url).toBe("string");
+            });
+    });
+    test("404: user not found", () => {
+        return request(app)
+            .get("/api/users/cornlover")
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("User not found");
+            });
+    });
+});

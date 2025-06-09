@@ -107,5 +107,13 @@
     "DELETE /api/comments/:comment_id": {
         "description": "Deletes a comment with given comment_id.",
         "exampleResponse": {}
+    },
+    "GET /api/users/:username": {
+        "description": "serves a user by username",
+        "exampleResponse": {
+            "username": "jessjelly",
+            "name": "Jess Jelly",
+            "avatar_url": "https://www.example.com/jess-avatar.png"
+        }
     }
 }
