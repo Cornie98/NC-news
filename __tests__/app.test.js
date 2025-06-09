@@ -334,3 +334,68 @@ describe("GET /api/users/:user_id", () => {
             });
     });
 });
+describe("PATCH /api/comments/:comment_id", () => {
+    test("200: responds with comment with vote appended", () => {
+        return request(app)
+            .get("/api/comments/5")
+            .then(({ body }) => {
+                const originalVotes = body.comment.votes;
+                return request(app)
+                    .patch("/api/comments/5")
+                    .send({ inc_votes: 1 })
+                    .expect(200)
+                    .then(({ body }) => {
+                        const comment = body.comment;
+                        expect(comment.comment_id).toBe(5);
+                        expect(typeof comment.votes).toBe("number");
+                        expect(comment.votes).toBe(originalVotes + 1);
+                    });
+            });
+    });
+
+    test("200: responds with comment with vote appended", () => {
+        return request(app)
+            .get("/api/comments/1")
+            .then(({ body }) => {
+                const originalVotes = body.comment.votes;
+                return request(app)
+                    .patch("/api/comments/1")
+                    .send({ inc_votes: -1 })
+                    .expect(200)
+                    .then(({ body }) => {
+                        const comment = body.comment;
+                        expect(comment.comment_id).toBe(1);
+                        expect(typeof comment.votes).toBe("number");
+                        expect(comment.votes).toBe(originalVotes - 1);
+                    });
+            });
+    });
+
+    test("400: responds with error invalid comment id", () => {
+        return request(app)
+            .patch("/api/comments/cat")
+            .send({ inc_votes: 1 })
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid comment ID");
+            });
+    });
+    test("400: responds with error invalid vote input", () => {
+        return request(app)
+            .patch("/api/comments/5")
+            .send({ inc_votes: "cat" })
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Invalid vote input");
+            });
+    });
+    test("404: responds with comment not found", () => {
+        return request(app)
+            .patch("/api/comments/500")
+            .send({ inc_votes: 1 })
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe("Comment not found");
+            });
+    });
+});
