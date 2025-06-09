@@ -1,4 +1,3 @@
-//const { response } = require("../app");
 const {
     selectCommentsByArticle,
     insertCommentByArticle,
@@ -7,75 +6,82 @@ const {
     updateCommentVotes,
 } = require("../models/comments.model");
 
-exports.getCommentsByArticle = (request, response, next) => {
-    const { article_id } = request.params;
+exports.getCommentsByArticle = async (req, res, next) => {
+    const { article_id } = req.params;
 
     if (isNaN(article_id)) {
-        return response.status(400).send({ msg: "Invalid article ID" });
+        return res.status(400).send({ msg: "Invalid article ID" });
     }
-    selectCommentsByArticle(article_id)
-        .then((comments) => {
-            response.status(200).send({ comments });
-        })
-        .catch(next);
+
+    try {
+        const comments = await selectCommentsByArticle(article_id);
+        res.status(200).send({ comments });
+    } catch (err) {
+        next(err);
+    }
 };
 
-exports.postCommentByArticle = (request, response, next) => {
-    const { article_id } = request.params;
-    const newComment = request.body;
+exports.postCommentByArticle = async (req, res, next) => {
+    const { article_id } = req.params;
+    const newComment = req.body;
 
     if (isNaN(article_id)) {
-        return response.status(400).send({ msg: "Invalid article ID" });
+        return res.status(400).send({ msg: "Invalid article ID" });
     }
 
-    insertCommentByArticle(article_id, newComment)
-        .then((comment) => {
-            response.status(201).send({ comment });
-        })
-        .catch(next);
+    try {
+        const comment = await insertCommentByArticle(article_id, newComment);
+        res.status(201).send({ comment });
+    } catch (err) {
+        next(err);
+    }
 };
-exports.getCommentById = (request, response, next) => {
-    const { comment_id } = request.params;
+
+exports.getCommentById = async (req, res, next) => {
+    const { comment_id } = req.params;
 
     if (isNaN(comment_id)) {
-        return response.status(400).send({ msg: "Invalid comment ID" });
+        return res.status(400).send({ msg: "Invalid comment ID" });
     }
 
-    selectCommentById(comment_id)
-        .then((comment) => {
-            return response.status(200).send({ comment });
-        })
-        .catch(next);
+    try {
+        const comment = await selectCommentById(comment_id);
+        res.status(200).send({ comment });
+    } catch (err) {
+        next(err);
+    }
 };
 
-exports.deleteCommentById = (request, response, next) => {
-    const { comment_id } = request.params;
+exports.deleteCommentById = async (req, res, next) => {
+    const { comment_id } = req.params;
 
     if (isNaN(comment_id)) {
-        return response.status(400).send({ msg: "Invalid comment ID" });
+        return res.status(400).send({ msg: "Invalid comment ID" });
     }
 
-    removeComment(comment_id)
-        .then(() => {
-            response.status(204).send();
-        })
-        .catch(next);
+    try {
+        await removeComment(comment_id);
+        res.status(204).send();
+    } catch (err) {
+        next(err);
+    }
 };
 
-exports.patchCommentById = (request, response, next) => {
-    const { comment_id } = request.params;
-    const { inc_votes } = request.body;
+exports.patchCommentById = async (req, res, next) => {
+    const { comment_id } = req.params;
+    const { inc_votes } = req.body;
 
     if (isNaN(comment_id)) {
-        return response.status(400).send({ msg: "Invalid comment ID" });
+        return res.status(400).send({ msg: "Invalid comment ID" });
     }
     if (typeof inc_votes !== "number") {
-        return response.status(400).send({ msg: "Invalid vote input" });
+        return res.status(400).send({ msg: "Invalid vote input" });
     }
 
-    updateCommentVotes(comment_id, inc_votes)
-        .then((comment) => {
-            response.status(200).send({ comment });
-        })
-        .catch(next);
+    try {
+        const comment = await updateCommentVotes(comment_id, inc_votes);
+        res.status(200).send({ comment });
+    } catch (err) {
+        next(err);
+    }
 };

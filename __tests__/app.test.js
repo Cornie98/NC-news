@@ -300,7 +300,6 @@ describe("DELETE /api/comments/:comment_id", () => {
             .delete("/api/comments/1000")
             .expect(404)
             .then(({ body }) => {
-                console.log(body.msg);
                 expect(body.msg).toBe("Comment not found");
             });
     });
@@ -396,6 +395,34 @@ describe("PATCH /api/comments/:comment_id", () => {
             .expect(404)
             .then(({ body }) => {
                 expect(body.msg).toBe("Comment not found");
+            });
+    });
+});
+describe("POST /api/articles", () => {
+    test("201: responds with new article data", () => {
+        const newArticle = {
+            author: "rogersop",
+            title: "New Article Title",
+            body: "This is the body of the new article.",
+            topic: "paper",
+            article_img_url: "https://example.com/cat.jpg",
+        };
+        return request(app)
+            .post("/api/articles")
+            .send(newArticle)
+            .expect(201)
+            .then(({ body }) => {
+                const article = body.article;
+                expect(article.author).toBe(newArticle.author);
+                expect(article.title).toBe(newArticle.title);
+                expect(article.body).toBe(newArticle.body);
+                expect(article.topic).toBe(newArticle.topic);
+                expect(article.article_img_url).toBe(
+                    newArticle.article_img_url
+                );
+                expect(article.votes).toBe(0);
+                expect(article).toHaveProperty("created_at");
+                expect(article.comment_count).toBe(0);
             });
     });
 });
