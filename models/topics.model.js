@@ -1,7 +1,10 @@
 const db = require("../db/connection");
 
-exports.selectAllTopics = () => {
-    return db
-        .query(`SELECT slug, description FROM topics`)
-        .then(({ rows }) => rows);
+exports.selectAllTopics = async () => {
+    try {
+        const result = await db.query(`SELECT slug, description FROM topics`);
+        return result.rows;
+    } catch (err) {
+        throw err;
+    }
 };

@@ -1,0 +1,58 @@
+body {
+    font-family: "Courier New", Courier, monospace;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+.heading {
+    position: sticky;
+    top: 0;
+    padding: 5px 15px;
+    background-color: #f0b5be;
+    font-size: small;
+}
+header {
+    background: #f4ced3;
+    color: #e33529;
+    padding: 1rem;
+    text-align: center;
+}
+
+main {
+    color: black;
+    padding: 2rem;
+    padding-left: 20rem;
+}
+section {
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-left: 5px solid #e33529;
+}
+th,
+td {
+    padding: 15px;
+}
+tbody tr:nth-child(even) {
+    background-color: rgba(244, 206, 211, 0.6);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: rgba(244, 206, 211, 0.2);
+}
+
+.sidebar {
+    position: fixed;
+    width: 1.8rem;
+    background-color: #f1f1f1;
+    padding-left: 0.5rem;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.subtopics {
+    min-width: max-content;
+}

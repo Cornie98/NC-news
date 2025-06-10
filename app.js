@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const apiRouter = require("./routers/api.router.js");
 
+app.use("/", express.static("public"));
+
 app.use(express.json());
 
 app.use("/api", apiRouter);
