@@ -39,6 +39,9 @@
                                 >PATCH article votes</a
                             >
                         </li>
+                        <li>
+                            <a href="#post-article-emoji">POST article emoji</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -234,6 +237,31 @@
                         }
                     }</code></pre>
             </section>
+            <section id="post-article-emoji" class="endpoint">
+                <h3>POST /api/articles/:article_id/emojis</h3>
+                <p>Posts an emoji reaction to a specific article.</p>
+
+                <h4>Request Body</h4>
+                <pre><code>
+            {
+                "username": "lurker",
+                "emoji": "🐱"
+            }
+                </code></pre>
+
+                <h4>Example Response</h4>
+                <pre><code>
+            {
+                "reaction": {
+                    "reaction_id": 5,
+                    "emoji_id": 3,
+                    "username": "lurker",
+                    "article_id": 1
+                }
+            }
+                </code></pre>
+            </section>
+
             <div class="heading">
                 <h2>Topics</h2>
             </div>
