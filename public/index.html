@@ -120,7 +120,7 @@
                         <tr>
                             <td><code>topic</code></td>
                             <td>Filter articles by topic slug</td>
-                            <td><code>football</code></td>
+                            <td><code>cats</code></td>
                         </tr>
                     </tbody>
                 </table>
@@ -256,12 +256,19 @@
                 <h3>GET /api/users</h3>
                 <p>Retrieve an array of all users.</p>
                 <h4>Example Response</h4>
-                <pre><code>{
+                <pre><code>
+            {
             "users": [
               {
                 "username": "jessjelly",
                 "name": "Jess Jelly",
                 "avatar_url": "https://www.example.com/jess-avatar.png"
+              },
+              {
+                username: 'weegembump',
+                name: 'Gemma Bump',
+                avatar_url:
+                  'https://vignette.wikia.nocookie.net/mrmen/images/7/7e/MrMen-Bump.png/revision/latest?cb=20180123225553'
               }
             ]
           }</code></pre>
@@ -270,7 +277,8 @@
                 <h3>GET /api/users/:username</h3>
                 <p>Retrieve a user by username</p>
                 <h4>Example Response</h4>
-                <pre><code>{
+                <pre><code>
+                    {
                     "username": "jessjelly",
                     "name": "Jess Jelly",
                     "avatar_url": "https://www.example.com/jess-avatar.png"
