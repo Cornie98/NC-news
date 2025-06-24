@@ -119,7 +119,7 @@
     "PATCH /api/comments/:comment_id": {
         "description": "Increments the vote count of a comment to the specified number",
         "requestBody": {
-            "inc_vote": 1
+            "inc_votes": 1
         },
         "exampleResponse": {
             "comment": {
