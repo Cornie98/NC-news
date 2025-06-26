@@ -12,8 +12,10 @@ const {
     postCommentByArticle,
 } = require("../controllers/comments.controller");
 
-const { postArticleEmoji } = require("../controllers/emojis.controller");
-
+const {
+    getArticleEmojis,
+    postArticleEmoji,
+} = require("../controllers/emojis.controller");
 articlesRouter.route("/").get(getAllArticles).post(postArticle);
 
 articlesRouter
@@ -26,5 +28,8 @@ articlesRouter
     .get(getCommentsByArticle)
     .post(postCommentByArticle);
 
-articlesRouter.route("/:article_id/emojis").post(postArticleEmoji);
+articlesRouter
+    .route("/:article_id/emojis")
+    .get(getArticleEmojis)
+    .post(postArticleEmoji);
 module.exports = articlesRouter;

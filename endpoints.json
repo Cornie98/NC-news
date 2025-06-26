@@ -92,7 +92,7 @@
     },
     "Patch /api/articles/:article_id": {
         "description": "Increments the vote count of an article to the specified number",
-        "requestBody": { "inc_vote": "1" },
+        "requestBody": { "inc_votes": "1" },
         "exampleResponse": {
             "article": {
                 "article_id": 1,

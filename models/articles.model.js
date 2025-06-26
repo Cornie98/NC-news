@@ -93,7 +93,6 @@ exports.updateArticleVotes = async (article_id, voteIncrement) => {
 };
 
 exports.insertArticle = async (newArticle) => {
-    console.log("inse4rt");
     const { author, title, body, topic, article_img_url } = newArticle;
 
     if (!author || !title || !body || !topic) {

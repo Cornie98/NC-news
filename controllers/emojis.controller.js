@@ -23,3 +23,14 @@ exports.postArticleEmoji = async (request, response, next) => {
         next(err);
     }
 };
+const { getEmojiReactionsByArticleId } = require("../models/emojis.model");
+
+exports.getArticleEmojis = async (req, res, next) => {
+    try {
+        const { article_id } = req.params;
+        const reactions = await getEmojiReactionsByArticleId(article_id);
+        res.status(200).send({ reactions });
+    } catch (err) {
+        next(err);
+    }
+};

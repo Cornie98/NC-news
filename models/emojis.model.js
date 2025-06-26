@@ -32,3 +32,17 @@ exports.addEmojiReaction = async (article_id, username, emoji_id) => {
 
     return inserted.rows[0];
 };
+exports.getEmojiReactionsByArticleId = async (article_id) => {
+    const result = await db.query(
+        `
+        SELECT e.emoji, COUNT(*) AS count
+        FROM emoji_article_user eau
+        JOIN emojis e ON eau.emoji_id = e.emoji_id
+        WHERE eau.article_id = $1
+        GROUP BY e.emoji;
+    `,
+        [article_id]
+    );
+
+    return result.rows;
+};
