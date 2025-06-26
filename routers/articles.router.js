@@ -16,6 +16,7 @@ const {
     getArticleEmojis,
     postArticleEmoji,
 } = require("../controllers/emojis.controller");
+
 articlesRouter.route("/").get(getAllArticles).post(postArticle);
 
 articlesRouter

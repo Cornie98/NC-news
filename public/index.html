@@ -2,15 +2,19 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>NC News</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>NC News API Documentation</title>
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <header>
             <h1>NC News API Documentation</h1>
-            <p>An API for accessing articles, users, topics, and comments</p>
+            <p>
+                An API for accessing articles, users, topics, comments, and
+                reactions
+            </p>
         </header>
+
         <nav class="sidebar" aria-label="API Endpoints Navigation">
             <ul>
                 <li>
@@ -67,9 +71,7 @@
                                 >PATCH comment votes</a
                             >
                         </li>
-                        <li>
-                            <a href="#delete-comment">DELETE comment</a>
-                        </li>
+                        <li><a href="#delete-comment">DELETE comment</a></li>
                     </ul>
                 </li>
             </ul>
@@ -86,6 +88,7 @@
                     Returns a JSON object listing all available API endpoints.
                 </p>
             </section>
+
             <div class="heading">
                 <h2>Articles</h2>
             </div>
@@ -129,219 +132,226 @@
                 </table>
 
                 <h4>Example Response</h4>
-                <pre><code>
-                {
-                    "articles": [
-                    {
-                        "article_id": 1,
-                        "title": "Avocado 10 ways",
-                        "topic": "cooking",
-                        "author": "weegembump",
-                        "created_at": "2018-05-30T15:59:13.341Z",
-                        "votes": 0,
-                        "comment_count": 6}
-                    },
-                    {
-                        "article_id": 2,
-                        "title": "How to make a vegan egg",
-                        "topic": "cooking",
-                        "author": "weegembump",
-                        "created_at": "2018-02-30T15:59:13.341Z",
-                        "votes": 0,
-                        "comment_count": 3
-                    }]
-                }
-            </code></pre>
+                <pre><code>{
+  "articles": [
+    {
+      "article_id": 1,
+      "title": "Avocado 10 ways",
+      "topic": "cooking",
+      "author": "weegembump",
+      "created_at": "2018-05-30T15:59:13.341Z",
+      "votes": 0,
+      "comment_count": 6
+    },
+    {
+      "article_id": 2,
+      "title": "How to make a vegan egg",
+      "topic": "cooking",
+      "author": "weegembump",
+      "created_at": "2018-02-28T15:59:13.341Z",
+      "votes": 0,
+      "comment_count": 3
+    }
+  ]
+}</code></pre>
             </section>
+
             <section id="get-article-by-id" class="endpoint">
                 <h3>GET /api/articles/:article_id</h3>
-                <p>Retrieve an object of an article with a specific ID</p>
+                <p>Retrieve an object of an article with a specific ID.</p>
                 <h4>Example Response</h4>
-                <pre><code>            "article": {
-                    "article_id": 1,
-                    "title": "The benefits of cat's purr",
-                    "author": "jessjelly",
-                    "body": "body...",
-                    "votes": 100,
-                    "created_at": "2020-01-01T00:00:00.000Z"
-                    "article_img_url": "https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?w=700&h=700",
-  
-                }</code></pre>
+                <pre><code>{
+  "article": {
+    "article_id": 1,
+    "title": "The benefits of cat's purr",
+    "author": "jessjelly",
+    "body": "Full article body here...",
+    "votes": 100,
+    "created_at": "2020-01-01T00:00:00.000Z",
+    "article_img_url": "https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?w=700&h=700"
+  }
+}</code></pre>
             </section>
+
             <section id="get-article-comments" class="endpoint">
                 <h3>GET /api/articles/:article_id/comments</h3>
                 <p>
-                    Retrieve an array of all comments by an article of specified
-                    ID
+                    Retrieve an array of all comments for the article with the
+                    specified ID.
                 </p>
                 <h4>Example Response</h4>
                 <pre><code>{
-                    "comments": [
-                        {
-                            "comment_id": 1,
-                            "votes": 16,
-                            "created_at": "2020-04-06T12:17:00.000Z",
-                            "author": "butter_bridge",
-                            "body": "Great article!"
-                        },
-                        {
-                            "comment_id": 2,
-                            "votes": 4,
-                            "created_at": "2020-03-06T12:17:00.000Z",
-                            "author": "icellusedkars",
-                            "body": "Thanks for sharing!"
-                        }
-                    ]
-                }</code></pre>
+  "comments": [
+    {
+      "comment_id": 1,
+      "votes": 16,
+      "created_at": "2020-04-06T12:17:00.000Z",
+      "author": "butter_bridge",
+      "body": "Great article!"
+    },
+    {
+      "comment_id": 2,
+      "votes": 4,
+      "created_at": "2020-03-06T12:17:00.000Z",
+      "author": "icellusedkars",
+      "body": "Thanks for sharing!"
+    }
+  ]
+}</code></pre>
             </section>
+
             <section id="post-article-comment" class="endpoint">
                 <h3>POST /api/articles/:article_id/comments</h3>
-                <p>Adds a new comment to the specified article</p>
+                <p>Adds a new comment to the specified article.</p>
                 <h4>Request Body</h4>
-                <pre><code>
-                    {
-                        "username": "lurker",
-                        "body": "This is a great article!"
-                    }
-                </code></pre>
+                <pre><code>{
+  "username": "lurker",
+  "body": "This is a great article!"
+}</code></pre>
                 <h4>Example Response</h4>
                 <pre><code>{
-                    "comment": {
-                        "comment_id": 19,
-                        "author": "lurker",
-                        "article_id": 3,
-                        "body": "This is a great article!",
-                        "votes": 0,
-                        "created_at": "2025-06-05T12:00:00.000Z"
-                    }
-                }</code></pre>
+  "comment": {
+    "comment_id": 19,
+    "author": "lurker",
+    "article_id": 3,
+    "body": "This is a great article!",
+    "votes": 0,
+    "created_at": "2025-06-05T12:00:00.000Z"
+  }
+}</code></pre>
             </section>
+
             <section id="patch-article-votes" class="endpoint">
                 <h3>PATCH /api/articles/:article_id</h3>
                 <p>
-                    Increments the vote count of a specified article to the
-                    specified number
+                    Increments the vote count of a specified article by the
+                    given number.
                 </p>
                 <h4>Request Body</h4>
-                <pre><code>{ "inc_votes": "1" }</code></pre>
+                <pre><code>{
+  "inc_votes": 1
+}</code></pre>
                 <h4>Example Response</h4>
-                <pre><code> 
-                    {
-                        "article": {
-                        "article_id": 1,
-                        "title": "Article title...",
-                        "author": "author_name",
-                        "body": "Full article body here...",
-                        "votes": 1,
-                        "created_at": "2020-01-01T00:00:00.000Z"
-                        }
-                    }</code></pre>
+                <pre><code>{
+  "article": {
+    "article_id": 1,
+    "title": "Article title...",
+    "author": "author_name",
+    "body": "Full article body here...",
+    "votes": 101,
+    "created_at": "2020-01-01T00:00:00.000Z"
+  }
+}</code></pre>
             </section>
+
             <section id="post-article-emoji" class="endpoint">
                 <h3>POST /api/articles/:article_id/emojis</h3>
-                <p>Posts an emoji reaction to a specific article.</p>
+                <p>
+                    Posts an emoji reaction to a specific article. If the emoji
+                    does not exist, it will be added.
+                </p>
 
                 <h4>Request Body</h4>
-                <pre><code>
-            {
-                "username": "lurker",
-                "emoji": "🐱"
-            }
-                </code></pre>
+                <pre><code>{
+  "username": "lurker",
+  "emoji": "🐱"
+}</code></pre>
 
                 <h4>Example Response</h4>
-                <pre><code>
-            {
-                "reaction": {
-                    "reaction_id": 5,
-                    "emoji_id": 3,
-                    "username": "lurker",
-                    "article_id": 1
-                }
-            }
-                </code></pre>
+                <pre><code>{
+  "reaction": {
+    "reaction_id": 5,
+    "emoji_id": 3,
+    "username": "lurker",
+    "article_id": 1
+  }
+}</code></pre>
             </section>
 
             <div class="heading">
                 <h2>Topics</h2>
             </div>
+
             <section id="get-topics" class="endpoint">
                 <h3>GET /api/topics</h3>
                 <p>Retrieve an array of all topics.</p>
                 <h4>Example Response</h4>
-                <pre><code>
-                    {
-                        "topics": 
-                        [{ "slug": "football", "description": "Footie!" },
-                        { "slug": "cats", "description": "Not dogs" }]
-                    }
-                </code></pre>
+                <pre><code>{
+  "topics": [
+    { "slug": "football", "description": "Footie!" },
+    { "slug": "cats", "description": "Not dogs" }
+  ]
+}</code></pre>
             </section>
+
             <div class="heading">
                 <h2>Users</h2>
             </div>
+
             <section id="get-users" class="endpoint">
                 <h3>GET /api/users</h3>
                 <p>Retrieve an array of all users.</p>
                 <h4>Example Response</h4>
-                <pre><code>
-            {
-            "users": [
-              {
-                "username": "jessjelly",
-                "name": "Jess Jelly",
-                "avatar_url": "https://www.example.com/jess-avatar.png"
-              },
-              {
-                username: 'weegembump',
-                name: 'Gemma Bump',
-                avatar_url:
-                  'https://vignette.wikia.nocookie.net/mrmen/images/7/7e/MrMen-Bump.png/revision/latest?cb=20180123225553'
-              }
-            ]
-          }</code></pre>
+                <pre><code>{
+  "users": [
+    {
+      "username": "jessjelly",
+      "name": "Jess Jelly",
+      "avatar_url": "https://www.example.com/jess-avatar.png"
+    },
+    {
+      "username": "weegembump",
+      "name": "Gemma Bump",
+      "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/7/7e/MrMen-Bump.png/revision/latest?cb=20180123225553"
+    }
+  ]
+}</code></pre>
             </section>
+
             <section id="get-user" class="endpoint">
                 <h3>GET /api/users/:username</h3>
-                <p>Retrieve a user by username</p>
+                <p>Retrieve a user by username.</p>
                 <h4>Example Response</h4>
-                <pre><code>
-                    {
-                    "username": "jessjelly",
-                    "name": "Jess Jelly",
-                    "avatar_url": "https://www.example.com/jess-avatar.png"
-                }</code></pre>
+                <pre><code>{
+  "username": "jessjelly",
+  "name": "Jess Jelly",
+  "avatar_url": "https://www.example.com/jess-avatar.png"
+}</code></pre>
             </section>
+
             <div class="heading">
                 <h2>Comments</h2>
             </div>
+
             <section id="patch-comment-votes" class="endpoint">
                 <h3>PATCH /api/comments/:comment_id</h3>
                 <p>
-                    Increments the vote count of a specified comment to the
-                    specified number
+                    Increments the vote count of a specified comment by the
+                    given number.
                 </p>
                 <h4>Request Body</h4>
-                <pre><code>{ "inc_votes": 1 }</code></pre>
+                <pre><code>{
+  "inc_votes": 1
+}</code></pre>
                 <h4>Example Response</h4>
-                <pre><code> 
-                     {
-                        "comment": {
-                            "comment_id": 19,
-                            "author": "lurker",
-                            "article_id": 3,
-                            "body": "This is a great article!",
-                            "votes": 1,
-                            "created_at": "2025-06-05T12:00:00.000Z"
-                        }
-                    }</code></pre>
+                <pre><code>{
+  "comment": {
+    "comment_id": 19,
+    "author": "lurker",
+    "article_id": 3,
+    "body": "This is a great article!",
+    "votes": 1,
+    "created_at": "2025-06-05T12:00:00.000Z"
+  }
+}</code></pre>
             </section>
+
             <section id="delete-comment" class="endpoint">
                 <h3>DELETE /api/comments/:comment_id</h3>
-                <p>Deletes a comment with given comment_id</p>
-                <h4>Example Response</h4>
-                <pre><code> 
-                     {}</code></pre>
+                <p>
+                    Deletes the specified comment. Returns status 204 No
+                    Content.
+                </p>
             </section>
         </main>
     </body>
