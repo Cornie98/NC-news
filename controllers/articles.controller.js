@@ -3,6 +3,7 @@ const {
     selectArticleById,
     updateArticleVotes,
     insertArticle,
+    removeArticle,
 } = require("../models/articles.model");
 
 exports.getAllArticles = async (request, response, next) => {
@@ -93,6 +94,20 @@ exports.postArticle = async (request, response, next) => {
         const newArticle = await selectArticleById(insertedArticle.article_id);
 
         response.status(201).send({ article: newArticle });
+    } catch (err) {
+        next(err);
+    }
+};
+exports.deleteArticleById = async (req, res, next) => {
+    const { article_id } = req.params;
+
+    if (isNaN(article_id)) {
+        return res.status(400).send({ msg: "Invalid article ID" });
+    }
+
+    try {
+        await removeArticle(article_id);
+        res.status(204).send();
     } catch (err) {
         next(err);
     }
