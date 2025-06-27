@@ -13,20 +13,20 @@ module.exports = [
             "https://images.pexels.com/photos/33242/cooking-ingredient-cuisine-kitchen.jpg?w=700&h=700",
     },
     {
-        description: "Cats rule the internet and our hearts",
+        description: "MMMMMEEEEEOOOOOWWWWWW!",
         slug: "cats",
         img_url:
             "https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?w=700&h=700",
     },
     {
-        description: "Explore the great outdoors and adventure awaits",
+        description: "Catch flights not feelings",
         slug: "travel",
         img_url:
             "https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg",
     },
     {
-        description: "Books: escape into new worlds and stories",
-        slug: "books",
+        description: "It's a Me, Mario!",
+        slug: "games",
         img_url:
             "https://images.pexels.com/photos/46274/pexels-photo-46274.jpeg?w=700&h=700",
     },

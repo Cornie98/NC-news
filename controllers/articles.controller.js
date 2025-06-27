@@ -61,7 +61,14 @@ exports.patchArticleVotes = async (request, response, next) => {
 
 exports.postArticle = async (request, response, next) => {
     try {
-        const { author, title, body, topic, article_img_url } = request.body;
+        const {
+            author,
+            title,
+            body,
+            topic,
+            article_img_url,
+            topic_description,
+        } = request.body;
 
         if (!author || !title || !body || !topic) {
             return Promise.reject({
@@ -80,6 +87,7 @@ exports.postArticle = async (request, response, next) => {
             body,
             topic,
             article_img_url: imgUrl,
+            topic_description,
         });
 
         const newArticle = await selectArticleById(insertedArticle.article_id);

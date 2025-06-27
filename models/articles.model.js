@@ -117,11 +117,25 @@ exports.insertArticle = async (newArticle) => {
     const topicResult = await db.query(`SELECT * FROM topics WHERE slug = $1`, [
         topic,
     ]);
+
     if (topicResult.rows.length === 0) {
-        return Promise.reject({
-            status: 404,
-            msg: "Topic not found",
-        });
+        if (!topic_description) {
+            return Promise.reject({
+                status: 400,
+                msg: "Topic not found and no description provided to create one",
+            });
+        }
+        if (!/^[a-z]+$/.test(topic)) {
+            return Promise.reject({
+                status: 400,
+                msg: "Topic slug must be a single lowercase word with no spaces or special characters",
+            });
+        }
+
+        await db.query(
+            `INSERT INTO topics (slug, description) VALUES ($1, $2)`,
+            [topic, topic_description]
+        );
     }
 
     const insertArticleResult = await db.query(
