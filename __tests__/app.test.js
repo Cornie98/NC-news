@@ -416,3 +416,13 @@ describe("POST /api/articles", () => {
             });
     });
 });
+describe("DELETE /api/articles/articleId", () => {
+    test("201: responds with new article data", () => {
+        return request(app)
+            .delete("/api/articles/3")
+            .expect(204)
+            .then(({ body }) => {
+                console.log(body.msg);
+            });
+    });
+});
