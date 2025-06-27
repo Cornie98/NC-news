@@ -26,8 +26,7 @@ exports.postUser = async (request, response, next) => {
         const { username, name, avatar_url } = request.body;
 
         if (!username || !name) {
-            return Promise.reject({
-                status: 400,
+            return response.status(400).send({
                 msg: "Missing required fields: 'username' and 'name' are required",
             });
         }
@@ -36,17 +35,24 @@ exports.postUser = async (request, response, next) => {
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-Yh-Mv83l7uZQf8wBaKtQw25dsDP1l7WXKw&s";
         const imgUrl = avatar_url || defaultAvatarUrl;
 
-        const newUser = await insertUser({
-            username,
-            name,
-            avatar_url: imgUrl,
-        });
-
-        response.status(201).send({ user: newUser });
+        try {
+            const newUser = await insertUser({
+                username,
+                name,
+                avatar_url: imgUrl,
+            });
+            response.status(201).send({ user: newUser });
+        } catch (error) {
+            if (error.status === 409) {
+                return response.status(409).send({ msg: error.msg });
+            }
+            throw error;
+        }
     } catch (err) {
         next(err);
     }
 };
+
 const { updateUser } = require("../models/users.model");
 
 exports.patchUserByUsername = async (request, response, next) => {

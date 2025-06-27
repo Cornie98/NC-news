@@ -55,11 +55,11 @@ exports.insertUser = async (newUser) => {
     try {
         const result = await db.query(
             `
-            INSERT INTO users (username, name, avatar_url)
-            VALUES ($1,$2,$3)
-            RETURNING username, name, avatar_url
-
-            `
+        INSERT INTO users (username, name, avatar_url)
+        VALUES ($1, $2, $3)
+        RETURNING username, name, avatar_url
+        `,
+            [username, name, avatar_url]
         );
         return result.rows[0];
     } catch (error) {
