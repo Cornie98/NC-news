@@ -45,7 +45,7 @@ exports.createTables = () => {
         
         CREATE TABLE comments (
         comment_id SERIAL PRIMARY KEY,
-        article_id INT REFERENCES articles(article_id),
+        article_id INT REFERENCES articles(article_id) ON DELETE CASCADE,
         body TEXT,
         votes INT DEFAULT 0,
         author VARCHAR REFERENCES users(username),

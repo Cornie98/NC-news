@@ -109,6 +109,7 @@ exports.deleteArticleById = async (req, res, next) => {
         await removeArticle(article_id);
         res.status(204).send();
     } catch (err) {
+        console.error("Delete failed:", err);
         next(err);
     }
 };
